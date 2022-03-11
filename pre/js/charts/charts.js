@@ -20,34 +20,105 @@ COLOR_OTHER_1 = '#B58753',
 COLOR_OTHER_2 = '#731854';
 
 export function initChart(iframe) {
-    //Desarrollo de funciones asociadas al gráfico > Título, subtítulo, notas, fuente de datos
-    document.getElementById('title').textContent = 'Figura 1.1. Evolución de la población de 65 y más años. España, 1908-2035';
-    document.getElementById('subtitle').textContent = 'Muestra de datos en valores absolutos (en miles de personas) y en valores relativos (en %).';
-    document.getElementById('data-source').textContent = 'Human Mortality Database (HMD): datos entre 1908 y 2019. Instituto Nacional de Estadística: Estadísticas del Padrón continuo (2020-2021) y proyecciones de población (2022-2035).';
-    document.getElementById('data-note').textContent = 'De 1908 a 2021 los datos son reales. De 2022 a 2035 son proyecciones.';
-
-    //Creación de otros elementos relativos al gráfico que no requieran lectura previa de datos > Selectores múltiples o simples, timelines, etc 
-
     //Lectura de datos
-    d3.csv('https://raw.githubusercontent.com/CarlosMunozDiazCSIC/informe_perfil_mayores_2022_demografia_1_1/main/data/evolucion_mayores_1908_2035.csv', function(error,data) {
+    d3.csv('https://raw.githubusercontent.com/CarlosMunozDiazCSIC/informe_perfil_mayores_2022_demografia_1_1/main/data/evolucion_mayores_1908_2035_v2.csv', function(error,data) {
         if (error) throw error;
 
         console.log(data);
 
-        //Uso de dos botones para ofrecer datos absolutos y en miles
-
         //Gráfico sencillo de barras apiladas
+        //Declaramos fuera las variables genéricas
+        let margin = {top: 10, right: 20, bottom: 20, left: 60},
+            width = document.getElementById('chart').clientWidth - margin.left - margin.right,
+            height = document.getElementById('chart').clientHeight - margin.top - margin.bottom;
+
+        let svg = d3.select("#chart")
+            .append("svg")
+              .attr("width", width + margin.left + margin.right)
+              .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+              .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+        
+        let gruposAbsolutos = ['Total_entre65y79','Total_mas80'];
+        let gruposPorcentuales = ['porc_total_entre65y79','porc_total_mas80'];
+
+        let x = d3.scaleBand()
+            .domain(d3.map(data, function(d){ return d.Periodo; }).keys())
+            .range([0, width])
+            .padding([0.2]);
+        
+        svg.append("g")
+            .attr("transform", "translate(0," + height + ")")
+            .call(d3.axisBottom(x));
+        
+        let y = d3.scaleLinear()
+            .domain([0, 6000000])
+            .range([height, 0]);
+
+        svg.append("g")
+            .call(d3.axisLeft(y));
+
+        let color = d3.scaleOrdinal()
+            .domain(grupos)
+            .range(['#F8B05C','#E37A42']);
+
+        let stackedDataAbsolutos = d3.stack()
+            .keys(gruposAbsolutos)
+            (data);
+        
+        let stackedDataPorcentuales = d3.stack()
+            .keys(gruposPorcentuales)
+            (data);
+        
+        function init() {
+            svg.append("g")
+                .selectAll("g")
+                .data(stackedDataAbsolutos)
+                .enter().append("g")
+                .attr("fill", function(d) { return color(d.key); })
+                .selectAll("rect")
+                .data(function(d) { return d; })
+                .enter().append("rect")
+                    .attr("x", function(d) { return x(d.data.Periodo); })
+                    .attr("y", function(d) { return y(d[1]); })
+                    .attr("height", function(d) { return y(d[0]) - y(d[1]); })
+                    .attr("width",x.bandwidth());
+        }
+
+        function setChart(type) {
+
+        }
+
+        function animateChart() {
+
+        }
+
+        /////
+        /////
+        // Resto - Chart
+        /////
+        /////
+        init();
+
+        //Uso de dos botones para ofrecer datos absolutos y en miles
+        document.getElementById('data_absolutos').addEventListener('click', function() {
+            setChart('Total');
+        });
+
+        document.getElementById('data_porcentajes').addEventListener('click', function() {
+            setChart('porc_total');
+        });
+        
+        //Animación del gráfico
+        document.getElementById('replay').addEventListener('click', function() {
+            animateChart();
+        });
 
         /////
         /////
         // Resto
         /////
         /////
-        
-        //Animación del gráfico
-        document.getElementById('replay').addEventListener('click', function() {
-            animateChart();
-        });
 
         //Iframe
         setFixedIframeUrl('informe_perfil_mayores_2022_demografia_1_1','tabla_poblacion_municipios');

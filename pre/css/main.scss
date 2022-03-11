@@ -234,7 +234,6 @@ body, button {
 
 //Estilos para botones
 .btn {
-    //Estilos genéricos
     margin-top: 8px;
     cursor: pointer;
     
@@ -277,6 +276,9 @@ body, button {
         &.active {
             background-color: #fff;
         }
+
+        &:first-of-type {margin-right: 8px;}
+        &:last-of-type {margin-left: 8px;}
     }
 }
 
