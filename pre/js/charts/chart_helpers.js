@@ -5,5 +5,5 @@ export function setFixedIframeUrl(chart, title) {
     
     //Iframe responsive
     let id2 = document.getElementById('iframe-responsive');
-    id2.innerHTML = `<div id="viz_cchs_informe_perfil_mayores_2022"></div><script type="text/javascript" src="https://pym.nprapps.org/pym.v1.min.js"></script><script>let pymParent = new pym.Parent('viz_cchs_informe_perfil_mayores_2022', 'https://CarlosMunozDiazCSIC.github.io/informe-2022-viz/?chart=${title}&iframe=responsive', {});</script>`;
+    id2.innerHTML = `<div id="viz_cchs_informe_perfil_mayores_2022"></div><script type="text/javascript" src="https://pym.nprapps.org/pym.v1.min.js"></script><script>let pymParent = new pym.Parent('viz_cchs_informe_perfil_mayores_2022', 'https://CarlosMunozDiazCSIC.github.io/${chart}/?iframe=responsive', {});</script>`;
 }

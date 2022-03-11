@@ -24,11 +24,11 @@ export function initChart(iframe) {
     d3.csv('https://raw.githubusercontent.com/CarlosMunozDiazCSIC/informe_perfil_mayores_2022_demografia_1_1/main/data/evolucion_mayores_1908_2035_v2.csv', function(error,data) {
         if (error) throw error;
 
-        console.log(data);
-
         //Gráfico sencillo de barras apiladas
+        let currentType = 'Total';
+
         //Declaramos fuera las variables genéricas
-        let margin = {top: 10, right: 20, bottom: 20, left: 60},
+        let margin = {top: 20, right: 20, bottom: 20, left: 70},
             width = document.getElementById('chart').clientWidth - margin.left - margin.right,
             height = document.getElementById('chart').clientHeight - margin.top - margin.bottom;
 
@@ -46,20 +46,24 @@ export function initChart(iframe) {
             .domain(d3.map(data, function(d){ return d.Periodo; }).keys())
             .range([0, width])
             .padding([0.2]);
+
+        let xAxis = d3.axisBottom(x)
+            .tickValues(x.domain().filter(function(d,i){ return !(i%10)}));
         
         svg.append("g")
             .attr("transform", "translate(0," + height + ")")
-            .call(d3.axisBottom(x));
+            .call(xAxis);
         
         let y = d3.scaleLinear()
-            .domain([0, 6000000])
+            .domain([0, 13000000])
             .range([height, 0]);
 
         svg.append("g")
+            .attr("class", "yaxis")
             .call(d3.axisLeft(y));
 
         let color = d3.scaleOrdinal()
-            .domain(grupos)
+            .domain(gruposAbsolutos)
             .range(['#F8B05C','#E37A42']);
 
         let stackedDataAbsolutos = d3.stack()
@@ -72,25 +76,113 @@ export function initChart(iframe) {
         
         function init() {
             svg.append("g")
+                .attr('class','chart-g')
                 .selectAll("g")
                 .data(stackedDataAbsolutos)
-                .enter().append("g")
+                .enter()
+                .append("g")
                 .attr("fill", function(d) { return color(d.key); })
                 .selectAll("rect")
                 .data(function(d) { return d; })
-                .enter().append("rect")
+                .enter()
+                .append("rect")
                     .attr("x", function(d) { return x(d.data.Periodo); })
+                    .attr("y", function(d) { return y(0); })
+                    .attr("height", function(d) { return 0; })
+                    .attr("width",x.bandwidth())
+                    .transition()
+                    .duration(2500)
                     .attr("y", function(d) { return y(d[1]); })
-                    .attr("height", function(d) { return y(d[0]) - y(d[1]); })
-                    .attr("width",x.bandwidth());
+                    .attr("height", function(d) { return y(d[0]) - y(d[1]); });
         }
 
         function setChart(type) {
+            if(type != currentType) {
+                if (type == 'Total') {
+                    //Escala Y
+                    y.domain([0,13000000]);
+                    svg.call(d3.axisLeft(y));
+                    //Colores
+                    color.domain(gruposAbsolutos);
+                    //Datos
+                    svg.select('.chart-g')
+                        .remove();
 
+                    svg.append("g")
+                        .attr('class','chart-g')
+                        .selectAll("g")
+                        .data(stackedDataAbsolutos)
+                        .enter()
+                        .append("g")
+                        .attr("fill", function(d) { return color(d.key); })
+                        .selectAll("rect")
+                        .data(function(d) { return d; })
+                        .enter()
+                        .append("rect")
+                            .attr("x", function(d) { return x(d.data.Periodo); })
+                            .attr("y", function(d) { return y(0); })
+                            .attr("height", function(d) { return 0; })
+                            .attr("width",x.bandwidth())
+                            .transition()
+                            .duration(2500)
+                            .attr("y", function(d) { return y(d[1]); })
+                            .attr("height", function(d) { return y(d[0]) - y(d[1]); });
+                } else {
+                    //Escala Y
+                    y.domain([0,30]);
+                    svg.call(d3.axisLeft(y));
+                    //Colores
+                    color.domain(gruposPorcentuales);
+                    //Datos
+                    svg.select('.chart-g')
+                        .remove();
+
+                    svg.append("g")
+                        .attr('class','chart-g')
+                        .selectAll("g")
+                        .data(stackedDataPorcentuales)
+                        .enter()
+                        .append("g")
+                        .attr("fill", function(d) { return color(d.key); })
+                        .selectAll("rect")
+                        .data(function(d) { return d; })
+                        .enter()
+                        .append("rect")
+                            .attr("x", function(d) { return x(d.data.Periodo); })
+                            .attr("y", function(d) { return y(0); })
+                            .attr("height", function(d) { return 0; })
+                            .attr("width",x.bandwidth())
+                            .transition()
+                            .duration(2500)
+                            .attr("y", function(d) { return y(d[1]); })
+                            .attr("height", function(d) { return y(d[0]) - y(d[1]); });
+                }
+            }            
         }
 
         function animateChart() {
-
+            svg.select(".chart-g")
+                .remove();
+            
+            svg.append("g")
+                .attr('class','chart-g')
+                .selectAll("g")
+                .data(currentType == 'Total' ? stackedDataAbsolutos : stackedDataPorcentuales)
+                .enter()
+                .append("g")
+                .attr("fill", function(d) { return color(d.key); })
+                .selectAll("rect")
+                .data(function(d) { return d; })
+                .enter()
+                .append("rect")
+                    .attr("x", function(d) { return x(d.data.Periodo); })
+                    .attr("y", function(d) { return y(0); })
+                    .attr("height", function(d) { return 0; })
+                    .attr("width",x.bandwidth())
+                    .transition()
+                    .duration(2500)
+                    .attr("y", function(d) { return y(d[1]); })
+                    .attr("height", function(d) { return y(d[0]) - y(d[1]); });
         }
 
         /////
@@ -102,11 +194,27 @@ export function initChart(iframe) {
 
         //Uso de dos botones para ofrecer datos absolutos y en miles
         document.getElementById('data_absolutos').addEventListener('click', function() {
+            //Cambiamos color botón
+            document.getElementById('data_porcentajes').classList.remove('active');
+            document.getElementById('data_absolutos').classList.add('active');
+
+            //Cambiamos gráfico
             setChart('Total');
+
+            //Cambiamos valor actual
+            currentType = 'Total';
         });
 
         document.getElementById('data_porcentajes').addEventListener('click', function() {
+            //Cambiamos color botón
+            document.getElementById('data_porcentajes').classList.add('active');
+            document.getElementById('data_absolutos').classList.remove('active');
+
+            //Cambiamos gráfico
             setChart('porc_total');
+
+            //Cambiamos valor actual
+            currentType = 'Porcentual';
         });
         
         //Animación del gráfico
@@ -127,13 +235,13 @@ export function initChart(iframe) {
         setRRSSLinks('evolucion_poblacion_65ymas');
 
         //Captura de pantalla de la visualización
-        setChartCanvas();
+        //setChartCanvas();
         setCustomCanvas();
 
         let pngDownload = document.getElementById('pngImage');
 
         pngDownload.addEventListener('click', function(){
-            setChartCanvasImage('evolucion_poblacion_65ymas');
+            //setChartCanvasImage('evolucion_poblacion_65ymas');
             setChartCustomCanvasImage('evolucion_poblacion_65ymas');
         });
 
