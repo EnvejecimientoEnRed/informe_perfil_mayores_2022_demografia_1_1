@@ -64,7 +64,7 @@ export function initChart(iframe) {
 
         let color = d3.scaleOrdinal()
             .domain(gruposAbsolutos)
-            .range(['#F8B05C','#E37A42']);
+            .range([COLOR_PRIMARY_1,COLOR_PRIMARY_2]);
 
         let stackedDataAbsolutos = d3.stack()
             .keys(gruposAbsolutos)
