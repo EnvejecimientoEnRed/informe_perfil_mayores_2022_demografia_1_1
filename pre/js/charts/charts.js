@@ -1,7 +1,7 @@
 //Desarrollo de las visualizaciones
 import * as d3 from 'd3';
 import { numberWithCommas2 } from '../helpers';
-//import { getInTooltip, getOutTooltip, positionTooltip } from './modules/tooltip';
+import { getInTooltip, getOutTooltip, positionTooltip } from '../modules/tooltip';
 import { setChartHeight } from '../modules/height';
 import { setChartCanvas, setChartCanvasImage, setCustomCanvas, setChartCustomCanvasImage } from '../modules/canvas-image';
 import { setRRSSLinks } from '../modules/rrss';
@@ -9,15 +9,8 @@ import { setFixedIframeUrl } from './chart_helpers';
 
 //Colores fijos
 const COLOR_PRIMARY_1 = '#F8B05C', 
-COLOR_PRIMARY_2 = '#E37A42', 
-COLOR_ANAG_1 = '#D1834F', 
-COLOR_ANAG_2 = '#BF2727', 
-COLOR_COMP_1 = '#528FAD', 
-COLOR_COMP_2 = '#AADCE0', 
-COLOR_GREY_1 = '#B5ABA4', 
-COLOR_GREY_2 = '#64605A', 
-COLOR_OTHER_1 = '#B58753', 
-COLOR_OTHER_2 = '#731854';
+COLOR_PRIMARY_2 = '#E37A42';
+let tooltip = d3.select('#tooltip');
 
 export function initChart(iframe) {
     //Lectura de datos
@@ -28,7 +21,7 @@ export function initChart(iframe) {
         let currentType = 'Total';
 
         //Declaramos fuera las variables genéricas
-        let margin = {top: 20, right: 20, bottom: 20, left: 70},
+        let margin = {top: 10, right: 10, bottom: 20, left: 72.5},
             width = document.getElementById('chart').clientWidth - margin.left - margin.right,
             height = document.getElementById('chart').clientHeight - margin.top - margin.bottom;
 
@@ -48,7 +41,7 @@ export function initChart(iframe) {
             .padding([0.2]);
 
         let xAxis = d3.axisBottom(x)
-            .tickValues(x.domain().filter(function(d,i){ return !(i%10)}));
+            .tickValues(x.domain().filter(function(d,i){ return !(i%14)}));
         
         svg.append("g")
             .attr("transform", "translate(0," + height + ")")
@@ -58,9 +51,13 @@ export function initChart(iframe) {
             .domain([0, 13000000])
             .range([height, 0]);
 
+        let yAxis = function(svg) {
+            svg.call(d3.axisLeft(y).tickFormat(function(d,i) { return numberWithCommas2(d); }))
+        }
+
         svg.append("g")
             .attr("class", "yaxis")
-            .call(d3.axisLeft(y));
+            .call(yAxis);
 
         let color = d3.scaleOrdinal()
             .domain(gruposAbsolutos)
@@ -91,9 +88,15 @@ export function initChart(iframe) {
                     .attr("height", function(d) { return 0; })
                     .attr("width",x.bandwidth())
                     .transition()
-                    .duration(2500)
+                    .duration(2000)
                     .attr("y", function(d) { return y(d[1]); })
-                    .attr("height", function(d) { return y(d[0]) - y(d[1]); });
+                    .attr("height", function(d) { return y(d[0]) - y(d[1]); })
+                    .on('mouseover', function(d,i,e) {
+
+                    })
+                    .on('mouseout', function(d,i,e) {
+
+                    });
         }
 
         function setChart(type) {
@@ -101,9 +104,11 @@ export function initChart(iframe) {
                 if (type == 'Total') {
                     //Escala Y
                     y.domain([0,13000000]);
-                    svg.call(d3.axisLeft(y));
+                    svg.select('.yaxis').call(d3.axisLeft(y).tickFormat(function(d,i) { return numberWithCommas2(d); }));
+
                     //Colores
                     color.domain(gruposAbsolutos);
+
                     //Datos
                     svg.select('.chart-g')
                         .remove();
@@ -124,15 +129,23 @@ export function initChart(iframe) {
                             .attr("height", function(d) { return 0; })
                             .attr("width",x.bandwidth())
                             .transition()
-                            .duration(2500)
+                            .duration(2000)
                             .attr("y", function(d) { return y(d[1]); })
-                            .attr("height", function(d) { return y(d[0]) - y(d[1]); });
+                            .attr("height", function(d) { return y(d[0]) - y(d[1]); })
+                            .on('mouseover', function(d,i,e) {
+
+                            })
+                            .on('mouseout', function(d,i,e) {
+        
+                            });
                 } else {
                     //Escala Y
                     y.domain([0,30]);
-                    svg.call(d3.axisLeft(y));
+                    svg.select('.yaxis').call(d3.axisLeft(y));
+
                     //Colores
                     color.domain(gruposPorcentuales);
+
                     //Datos
                     svg.select('.chart-g')
                         .remove();
@@ -153,9 +166,15 @@ export function initChart(iframe) {
                             .attr("height", function(d) { return 0; })
                             .attr("width",x.bandwidth())
                             .transition()
-                            .duration(2500)
+                            .duration(2000)
                             .attr("y", function(d) { return y(d[1]); })
-                            .attr("height", function(d) { return y(d[0]) - y(d[1]); });
+                            .attr("height", function(d) { return y(d[0]) - y(d[1]); })
+                            .on('mouseover', function(d,i,e) {
+
+                            })
+                            .on('mouseout', function(d,i,e) {
+        
+                            });
                 }
             }            
         }
