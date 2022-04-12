@@ -121,28 +121,39 @@ body, button {
 
         //Visualización
         &__viz {
-            height: 420px;
             margin-top: 12px;
+            //Títulos en ejes > En otra parte
 
-            & .tick text {
-                font-family: 'Montserrat';
-                font-style: normal;
-                font-weight: 300;
-                font-size: 12px;
-                line-height: 10px;
-            
-                color: #262626;
-            }
-            
-            & .tick line {
-                stroke: #F0F0F0;
-                stroke-width: 0.5px;
-            }
-            
-            & .line-special {
-                stroke: #000 !important;
-                stroke-width: 0.5px !important;
-            }
+            //Visualización
+            .chart {
+                height: 420px;
+
+                //Texto y estilos de ejes
+                & .tick text {
+                    font-family: 'Montserrat';
+                    font-style: normal;
+                    font-weight: 300;
+                    font-size: 12px;
+                    line-height: 10px;
+                
+                    color: #262626;
+                }
+
+                .domain {
+                    stroke: #262626;
+                    stroke-width: 1px;
+                }
+                
+                & .tick line {
+                    stroke: #262626;
+                    stroke-width: 0.5px;
+                }
+                
+                & .line-special {
+                    stroke: #000 !important;
+                    stroke-width: 0.5px !important;
+                }
+            }           
         }
 
         //Pie
@@ -290,6 +301,21 @@ body, button {
             margin-top: 24px;
         }
     }
+
+    &__yaxis {
+        font-size: 0.85em;
+        line-height: 1.25em;
+        font-weight: 400;
+        color: #262626;
+    }
+
+    &__xaxis {
+        font-size: 0.85em;
+        line-height: 1.25em;
+        font-weight: 400;
+        color: #262626;
+        text-align: center;
+    }
 }
 
 .link {
@@ -406,20 +432,6 @@ body, button {
             &__options {
                 justify-content: center;
             }
-        }
-    }
-
-    .b-title {
-        width: 100%;
-        max-width: none;
-    
-        .title {
-            max-width: calc(100% - 90px);
-        }
-        
-        .subtitle {
-            //El ancho dependerá de la longitud del título > Para que no se pegue con el logo
-            max-width: calc(100% - 90px);
         }
     }
 

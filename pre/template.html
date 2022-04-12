@@ -18,7 +18,7 @@
             <section class="content b-chart active" id="chartBlock">
                 <div class="b-title">
                     <h1 class="title">Figura 1.1. Evolución de la población de 65 y más años. España, 1908-2035</h1>
-                    <h2 class="subtitle">Muestra de datos en valores absolutos (personas) y en valores relativos (en %)</h2>
+                    <h2 class="subtitle">Gráfico 1/2022. Muestra de datos en valores absolutos (personas) y en valores relativos (en %)</h2>
                 </div>
                 <div class="chart__logics">
                     <div class="chart__legend">
@@ -36,7 +36,11 @@
                     <button class="btn__chart active" id="data_absolutos">Absolutos</button>
                     <button class="btn__chart" id="data_porcentajes">Porcentajes</button>
                 </div>
-                <div class="chart__viz" id="chart"></div>
+                <div class="chart__viz">
+                    <p class="text__yaxis" id="texto-reactivo">Personas</p>
+                    <div class="chart" id="chart"></div>
+                    <p class="text__xaxis">Años</p>
+                </div>
                 <!-- Pie de gráfico -->
                 <div class="chart__footer">
                     <div class="chart__source">

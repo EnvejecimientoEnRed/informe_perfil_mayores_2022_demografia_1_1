@@ -21,7 +21,7 @@ export function initChart(iframe) {
         let currentType = 'Total';
 
         //Declaramos fuera las variables genéricas
-        let margin = {top: 10, right: 10, bottom: 20, left: 72.5},
+        let margin = {top: 10, right: 12.5, bottom: 20, left: 72.5},
             width = document.getElementById('chart').clientWidth - margin.left - margin.right,
             height = document.getElementById('chart').clientHeight - margin.top - margin.bottom;
 
@@ -40,8 +40,7 @@ export function initChart(iframe) {
             .range([0, width])
             .padding([0.2]);
 
-        let xAxis = d3.axisBottom(x)
-            .tickValues(x.domain().filter(function(d,i){ return !(i%14)}));
+        let xAxis = d3.axisBottom(x).tickValues(x.domain().filter(function(d,i){ if(i == 0 || i == 25 || i == 50 || i == 75 || i == 100 || i == data.length - 1){ return d; } }));
         
         svg.append("g")
             .attr("transform", "translate(0," + height + ")")
@@ -52,7 +51,7 @@ export function initChart(iframe) {
             .range([height, 0]);
 
         let yAxis = function(svg) {
-            svg.call(d3.axisLeft(y).tickFormat(function(d,i) { return numberWithCommas2(d); }))
+            svg.call(d3.axisLeft(y).ticks(5).tickFormat(function(d,i) { return numberWithCommas2(d); }))
         }
 
         svg.append("g")
@@ -104,7 +103,7 @@ export function initChart(iframe) {
                 if (type == 'Total') {
                     //Escala Y
                     y.domain([0,13000000]);
-                    svg.select('.yaxis').call(d3.axisLeft(y).tickFormat(function(d,i) { return numberWithCommas2(d); }));
+                    svg.select('.yaxis').call(d3.axisLeft(y).ticks(5).tickFormat(function(d,i) { return numberWithCommas2(d); }));
 
                     //Colores
                     color.domain(gruposAbsolutos);
@@ -135,7 +134,7 @@ export function initChart(iframe) {
                 } else {
                     //Escala Y
                     y.domain([0,30]);
-                    svg.select('.yaxis').call(d3.axisLeft(y));
+                    svg.select('.yaxis').call(d3.axisLeft(y).ticks(5));
 
                     //Colores
                     color.domain(gruposPorcentuales);
