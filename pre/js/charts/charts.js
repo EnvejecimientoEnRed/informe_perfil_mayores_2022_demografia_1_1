@@ -87,16 +87,16 @@ export function initChart(iframe) {
                     .attr("y", function(d) { return y(0); })
                     .attr("height", function(d) { return 0; })
                     .attr("width",x.bandwidth())
-                    .transition()
-                    .duration(2000)
-                    .attr("y", function(d) { return y(d[1]); })
-                    .attr("height", function(d) { return y(d[0]) - y(d[1]); })
                     .on('mouseover', function(d,i,e) {
 
                     })
                     .on('mouseout', function(d,i,e) {
 
-                    });
+                    })
+                    .transition()
+                    .duration(2000)
+                    .attr("y", function(d) { return y(d[1]); })
+                    .attr("height", function(d) { return y(d[0]) - y(d[1]); });                    
         }
 
         function setChart(type) {
@@ -131,13 +131,7 @@ export function initChart(iframe) {
                             .transition()
                             .duration(2000)
                             .attr("y", function(d) { return y(d[1]); })
-                            .attr("height", function(d) { return y(d[0]) - y(d[1]); })
-                            .on('mouseover', function(d,i,e) {
-
-                            })
-                            .on('mouseout', function(d,i,e) {
-        
-                            });
+                            .attr("height", function(d) { return y(d[0]) - y(d[1]); });
                 } else {
                     //Escala Y
                     y.domain([0,30]);
@@ -168,13 +162,7 @@ export function initChart(iframe) {
                             .transition()
                             .duration(2000)
                             .attr("y", function(d) { return y(d[1]); })
-                            .attr("height", function(d) { return y(d[0]) - y(d[1]); })
-                            .on('mouseover', function(d,i,e) {
-
-                            })
-                            .on('mouseout', function(d,i,e) {
-        
-                            });
+                            .attr("height", function(d) { return y(d[0]) - y(d[1]); });
                 }
             }            
         }
