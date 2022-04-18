@@ -13,7 +13,6 @@ function setChartHeight(iframe) {
         let footerTop = 8, containerPadding = 8;
 
         //Comprobar previamente la altura que le demos al MAIN
-
         let height = 720;
         document.getElementsByClassName('chart__viz')[0].style.height = height - titleBlock - logicBlock - footerBlock - footerTop - containerPadding + 'px';
     } else {

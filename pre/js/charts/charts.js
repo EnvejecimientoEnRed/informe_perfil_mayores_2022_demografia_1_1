@@ -3,7 +3,7 @@ import * as d3 from 'd3';
 import { numberWithCommas2 } from '../helpers';
 import { getInTooltip, getOutTooltip, positionTooltip } from '../modules/tooltip';
 import { setChartHeight } from '../modules/height';
-import { setCustomCanvas, setChartCustomCanvasImage } from '../modules/canvas-image';
+import { setChartCanvas, setChartCanvasImage } from '../modules/canvas-image';
 import { setRRSSLinks } from '../modules/rrss';
 import { setFixedIframeUrl } from './chart_helpers';
 
@@ -21,7 +21,7 @@ export function initChart(iframe) {
         let currentType = 'Total';
 
         //Declaramos fuera las variables genéricas
-        let margin = {top: 10, right: 12.5, bottom: 20, left: 72.5},
+        let margin = {top: 7.5, right: 12.5, bottom: 20, left: 72.5},
             width = document.getElementById('chart').clientWidth - margin.left - margin.right,
             height = document.getElementById('chart').clientHeight - margin.top - margin.bottom;
 
@@ -87,10 +87,10 @@ export function initChart(iframe) {
                     .attr("height", function(d) { return 0; })
                     .attr("width",x.bandwidth())
                     .on('mouseover', function(d,i,e) {
-
+                        console.log(d,i,e);
                     })
                     .on('mouseout', function(d,i,e) {
-
+                        console.log(d,i,e);
                     })
                     .transition()
                     .duration(2000)
@@ -186,7 +186,7 @@ export function initChart(iframe) {
                     .attr("height", function(d) { return 0; })
                     .attr("width",x.bandwidth())
                     .transition()
-                    .duration(2500)
+                    .duration(2000)
                     .attr("y", function(d) { return y(d[1]); })
                     .attr("height", function(d) { return y(d[0]) - y(d[1]); });
         }
@@ -204,6 +204,9 @@ export function initChart(iframe) {
             document.getElementById('data_porcentajes').classList.remove('active');
             document.getElementById('data_absolutos').classList.add('active');
 
+            //Cambio en el texto
+            document.getElementById('texto-reactivo').textContent = 'Personas';
+
             //Cambiamos gráfico
             setChart('Total');
 
@@ -215,6 +218,9 @@ export function initChart(iframe) {
             //Cambiamos color botón
             document.getElementById('data_porcentajes').classList.add('active');
             document.getElementById('data_absolutos').classList.remove('active');
+
+            //Cambio en el texto
+            document.getElementById('texto-reactivo').textContent = 'Porcentaje';
 
             //Cambiamos gráfico
             setChart('porc_total');
@@ -241,14 +247,12 @@ export function initChart(iframe) {
         setRRSSLinks('evolucion_poblacion_65ymas');
 
         //Captura de pantalla de la visualización
-        //setChartCanvas();
-        setCustomCanvas();
+        setChartCanvas();
 
         let pngDownload = document.getElementById('pngImage');
 
         pngDownload.addEventListener('click', function(){
-            //setChartCanvasImage('evolucion_poblacion_65ymas');
-            setChartCustomCanvasImage('evolucion_poblacion_65ymas');
+            setChartCanvasImage('evolucion_poblacion_65ymas');
         });
 
         //Altura del frame
