@@ -1,6 +1,6 @@
 //Desarrollo de las visualizaciones
 import * as d3 from 'd3';
-import { numberWithCommas2 } from '../helpers';
+import { numberWithCommas2, numberWithCommas } from '../helpers';
 import { getInTooltip, getOutTooltip, positionTooltip } from '../modules/tooltip';
 import { setChartHeight } from '../modules/height';
 import { setChartCanvas, setChartCanvasImage } from '../modules/canvas-image';
@@ -88,9 +88,20 @@ export function initChart(iframe) {
                     .attr("width",x.bandwidth())
                     .on('mouseover', function(d,i,e) {
                         console.log(d,i,e);
+
+                        //Texto
+                        let html = '<p class="chart__tooltip--title">' + d.data.Periodo + '</p>' + 
+                            '<p class="chart__tooltip--text">Entre 65 y 79 años: ' + numberWithCommas2(parseInt(d.data.Total_entre65y79)) + ' personas (' + numberWithCommas(parseFloat(d.data.porc_total_entre65y79).toFixed(1)) + ' % del total)</p>' +
+                            '<p class="chart__tooltip--text">80 o más años: ' + numberWithCommas2(parseInt(d.data.Total_mas80)) + ' personas (' + numberWithCommas(parseFloat(d.data.porc_total_mas80).toFixed(1)) + ' % del total)</p>';
+                    
+                        tooltip.html(html);
+
+                        //Tooltip
+                        positionTooltip(window.event, tooltip);
+                        getInTooltip(tooltip);
                     })
                     .on('mouseout', function(d,i,e) {
-                        console.log(d,i,e);
+                        getOutTooltip(tooltip);
                     })
                     .transition()
                     .duration(2000)
