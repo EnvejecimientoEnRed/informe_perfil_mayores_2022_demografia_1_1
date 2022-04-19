@@ -40,7 +40,11 @@ export function initChart(iframe) {
             .range([0, width])
             .padding([0.2]);
 
-        let xAxis = d3.axisBottom(x).tickValues(x.domain().filter(function(d,i){ if(i == 0 || i == 25 || i == 50 || i == 75 || i == 100 || i == data.length - 1){ return d; } }));
+        let xAxis = function(svg) {
+            svg.call(d3.axisBottom(x).tickValues(x.domain().filter(function(d,i){ if(i == 0 || i == 25 || i == 50 || i == 75 || i == 100 || i == data.length - 1){ return d; } })));
+            svg.call(function(g){g.selectAll('.tick line').remove()});
+            svg.call(function(g){g.select('.domain').remove()});
+        }
         
         svg.append("g")
             .attr("transform", "translate(0," + height + ")")
@@ -51,7 +55,19 @@ export function initChart(iframe) {
             .range([height, 0]);
 
         let yAxis = function(svg) {
-            svg.call(d3.axisLeft(y).ticks(5).tickFormat(function(d,i) { return numberWithCommas2(d); }))
+            svg.call(d3.axisLeft(y).ticks(5).tickFormat(function(d,i) { return numberWithCommas2(d); }));
+            svg.call(function(g) {
+                g.call(function(g){
+                    g.selectAll('.tick line')
+                        .attr('class', function(d,i) {
+                            if (d == 0) {
+                                return 'line-special';
+                            }
+                        })
+                        .attr('x1', '0%')
+                        .attr('x2', `${width}`)
+                });
+            });
         }
 
         svg.append("g")
@@ -82,12 +98,23 @@ export function initChart(iframe) {
                 .data(function(d) { return d; })
                 .enter()
                 .append("rect")
+                    .attr('class', function(d) { return 'rect rect-' + d.data.Periodo; })
                     .attr("x", function(d) { return x(d.data.Periodo); })
                     .attr("y", function(d) { return y(0); })
                     .attr("height", function(d) { return 0; })
                     .attr("width",x.bandwidth())
                     .on('mouseover', function(d,i,e) {
-                        console.log(d,i,e);
+                        //Opacidad en barras
+                        let css = e[i].getAttribute('class').split(' ')[1];
+                        let bars = svg.selectAll('.rect');                    
+                
+                        bars.each(function() {
+                            this.style.opacity = '0.4';
+                            let split = this.getAttribute('class').split(" ")[1];
+                            if(split == `${css}`) {
+                                this.style.opacity = '1';
+                            }
+                        });
 
                         //Texto
                         let html = '<p class="chart__tooltip--title">' + d.data.Periodo + '</p>' + 
@@ -101,7 +128,14 @@ export function initChart(iframe) {
                         getInTooltip(tooltip);
                     })
                     .on('mouseout', function(d,i,e) {
-                        getOutTooltip(tooltip);
+                        //Quitamos los estilos de la línea
+                        let bars = svg.selectAll('.rect');
+                        bars.each(function() {
+                            this.style.opacity = '1';
+                        });
+                    
+                        //Quitamos el tooltip
+                        getOutTooltip(tooltip); 
                     })
                     .transition()
                     .duration(2000)
@@ -114,7 +148,7 @@ export function initChart(iframe) {
                 if (type == 'Total') {
                     //Escala Y
                     y.domain([0,13000000]);
-                    svg.select('.yaxis').call(d3.axisLeft(y).ticks(5).tickFormat(function(d,i) { return numberWithCommas2(d); }));
+                    svg.select('.yaxis').call(yAxis);
 
                     //Colores
                     color.domain(gruposAbsolutos);
@@ -138,6 +172,40 @@ export function initChart(iframe) {
                             .attr("y", function(d) { return y(0); })
                             .attr("height", function(d) { return 0; })
                             .attr("width",x.bandwidth())
+                            .on('mouseover', function(d,i,e) {
+                                //Opacidad en barras
+                                let css = e[i].getAttribute('class').split(' ')[1];
+                                let bars = svg.selectAll('.rect');                    
+                        
+                                bars.each(function() {
+                                    this.style.opacity = '0.4';
+                                    let split = this.getAttribute('class').split(" ")[1];
+                                    if(split == `${css}`) {
+                                        this.style.opacity = '1';
+                                    }
+                                });
+        
+                                //Texto
+                                let html = '<p class="chart__tooltip--title">' + d.data.Periodo + '</p>' + 
+                                    '<p class="chart__tooltip--text">Entre 65 y 79 años: ' + numberWithCommas2(parseInt(d.data.Total_entre65y79)) + ' personas (' + numberWithCommas(parseFloat(d.data.porc_total_entre65y79).toFixed(1)) + ' % del total)</p>' +
+                                    '<p class="chart__tooltip--text">80 o más años: ' + numberWithCommas2(parseInt(d.data.Total_mas80)) + ' personas (' + numberWithCommas(parseFloat(d.data.porc_total_mas80).toFixed(1)) + ' % del total)</p>';
+                            
+                                tooltip.html(html);
+        
+                                //Tooltip
+                                positionTooltip(window.event, tooltip);
+                                getInTooltip(tooltip);
+                            })
+                            .on('mouseout', function(d,i,e) {
+                                //Quitamos los estilos de la línea
+                                let bars = svg.selectAll('.rect');
+                                bars.each(function() {
+                                    this.style.opacity = '1';
+                                });
+                            
+                                //Quitamos el tooltip
+                                getOutTooltip(tooltip); 
+                            })
                             .transition()
                             .duration(2000)
                             .attr("y", function(d) { return y(d[1]); })
@@ -145,7 +213,7 @@ export function initChart(iframe) {
                 } else {
                     //Escala Y
                     y.domain([0,30]);
-                    svg.select('.yaxis').call(d3.axisLeft(y).ticks(5));
+                    svg.select('.yaxis').call(yAxis);
 
                     //Colores
                     color.domain(gruposPorcentuales);
@@ -169,6 +237,40 @@ export function initChart(iframe) {
                             .attr("y", function(d) { return y(0); })
                             .attr("height", function(d) { return 0; })
                             .attr("width",x.bandwidth())
+                            .on('mouseover', function(d,i,e) {
+                                //Opacidad en barras
+                                let css = e[i].getAttribute('class').split(' ')[1];
+                                let bars = svg.selectAll('.rect');                    
+                        
+                                bars.each(function() {
+                                    this.style.opacity = '0.4';
+                                    let split = this.getAttribute('class').split(" ")[1];
+                                    if(split == `${css}`) {
+                                        this.style.opacity = '1';
+                                    }
+                                });
+        
+                                //Texto
+                                let html = '<p class="chart__tooltip--title">' + d.data.Periodo + '</p>' + 
+                                    '<p class="chart__tooltip--text">Entre 65 y 79 años: ' + numberWithCommas2(parseInt(d.data.Total_entre65y79)) + ' personas (' + numberWithCommas(parseFloat(d.data.porc_total_entre65y79).toFixed(1)) + ' % del total)</p>' +
+                                    '<p class="chart__tooltip--text">80 o más años: ' + numberWithCommas2(parseInt(d.data.Total_mas80)) + ' personas (' + numberWithCommas(parseFloat(d.data.porc_total_mas80).toFixed(1)) + ' % del total)</p>';
+                            
+                                tooltip.html(html);
+        
+                                //Tooltip
+                                positionTooltip(window.event, tooltip);
+                                getInTooltip(tooltip);
+                            })
+                            .on('mouseout', function(d,i,e) {
+                                //Quitamos los estilos de la línea
+                                let bars = svg.selectAll('.rect');
+                                bars.each(function() {
+                                    this.style.opacity = '1';
+                                });
+                            
+                                //Quitamos el tooltip
+                                getOutTooltip(tooltip); 
+                            })
                             .transition()
                             .duration(2000)
                             .attr("y", function(d) { return y(d[1]); })
@@ -196,6 +298,40 @@ export function initChart(iframe) {
                     .attr("y", function(d) { return y(0); })
                     .attr("height", function(d) { return 0; })
                     .attr("width",x.bandwidth())
+                    .on('mouseover', function(d,i,e) {
+                        //Opacidad en barras
+                        let css = e[i].getAttribute('class').split(' ')[1];
+                        let bars = svg.selectAll('.rect');                    
+                
+                        bars.each(function() {
+                            this.style.opacity = '0.4';
+                            let split = this.getAttribute('class').split(" ")[1];
+                            if(split == `${css}`) {
+                                this.style.opacity = '1';
+                            }
+                        });
+
+                        //Texto
+                        let html = '<p class="chart__tooltip--title">' + d.data.Periodo + '</p>' + 
+                            '<p class="chart__tooltip--text">Entre 65 y 79 años: ' + numberWithCommas2(parseInt(d.data.Total_entre65y79)) + ' personas (' + numberWithCommas(parseFloat(d.data.porc_total_entre65y79).toFixed(1)) + ' % del total)</p>' +
+                            '<p class="chart__tooltip--text">80 o más años: ' + numberWithCommas2(parseInt(d.data.Total_mas80)) + ' personas (' + numberWithCommas(parseFloat(d.data.porc_total_mas80).toFixed(1)) + ' % del total)</p>';
+                    
+                        tooltip.html(html);
+
+                        //Tooltip
+                        positionTooltip(window.event, tooltip);
+                        getInTooltip(tooltip);
+                    })
+                    .on('mouseout', function(d,i,e) {
+                        //Quitamos los estilos de la línea
+                        let bars = svg.selectAll('.rect');
+                        bars.each(function() {
+                            this.style.opacity = '1';
+                        });
+                    
+                        //Quitamos el tooltip
+                        getOutTooltip(tooltip); 
+                    })
                     .transition()
                     .duration(2000)
                     .attr("y", function(d) { return y(d[1]); })

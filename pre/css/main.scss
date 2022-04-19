@@ -154,12 +154,15 @@ button {
                 
                 & .tick line {
                     stroke: #262626;
+                    opacity: 0.7;
+                    stroke-dasharray: 5;
                     stroke-width: 0.5px;
                 }
                 
                 & .line-special {
                     stroke: #000 !important;
-                    stroke-width: 0.5px !important;
+                    stroke-dasharray: 0 !important;
+                    stroke-width: 1px !important;
                 }
             }           
         }
@@ -411,22 +414,22 @@ button {
     width: 135px;
     height: auto;
     padding: 8px;
-    background-color: #fcfcfc;
+    background-color: #fffaf0;
 
     &--title {
         font-style: normal;
         font-weight: 700;
         font-size: 12px;
         line-height: 1.1;
-        color: #000;
+        color: #262626;
     }
 
     &--text {
         font-style: normal;
-        font-weight: 300;
+        font-weight: 400;
         font-size: 12px;
         line-height: 1.1;
-        color: #000;
+        color: #262626;
 
         margin-top: 4px;
     }
