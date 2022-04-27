@@ -1,4 +1,3 @@
-import 'url-search-params-polyfill';
 import './modules/tabs';
 import {initChart} from './charts/charts';
 
