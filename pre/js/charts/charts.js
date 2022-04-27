@@ -12,7 +12,7 @@ const COLOR_PRIMARY_1 = '#F8B05C',
 COLOR_PRIMARY_2 = '#E37A42';
 let tooltip = d3.select('#tooltip');
 
-export function initChart(iframe) {
+export function initChart() {
     //Lectura de datos
     d3.csv('https://raw.githubusercontent.com/CarlosMunozDiazCSIC/informe_perfil_mayores_2022_demografia_1_1/main/data/evolucion_mayores_1908_2035_v2.csv', function(error,data) {
         if (error) throw error;
@@ -422,6 +422,6 @@ export function initChart(iframe) {
         });
 
         //Altura del frame
-        setChartHeight(iframe);
+        setChartHeight();
     });    
 }

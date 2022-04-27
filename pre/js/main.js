@@ -8,13 +8,4 @@ import '../css/main.scss';
 /////////////
 //////// RECOGIDA DE PARÁMETROS DE LA URL
 /////////////
-getUrlParams();
-
-function getUrlParams() {
-    const params = new URLSearchParams(window.location.search);
-
-    //Visualización y tipo de iframe
-    const iframe = params.get('iframe');
-
-    initChart(iframe);
-}
+initChart();
