@@ -18,7 +18,7 @@
             <section class="content b-chart active" id="chartBlock">
                 <div class="b-title">
                     <h1 class="title">Figura 1.1. Evolución de la población de 65 y más años. España, 1908-2035</h1>
-                    <h2 class="subtitle">Gráfico 1/2022. Muestra de datos en valores absolutos (personas) y relativos (en %)</h2>
+                    <h2 class="subtitle">Gráfico 1/2022</h2>
                 </div>
                 <div class="chart__logics">
                     <div class="chart__legend">
@@ -44,10 +44,13 @@
                 <!-- Pie de gráfico -->
                 <div class="chart__footer">
                     <div class="chart__source">
-                        <p class="chart__source--data"><span>Fuente: </span><span id="data-source">Human Mortality Database (HMD): datos entre 1908 y 2019. Instituto Nacional de Estadística: Estadísticas del Padrón continuo (2020-2021), proyecciones de población (2022-2035)</span> y Laboratorio de Estadísticas Experimentales (CSIC)</p>
+                        <div class="chart__source--info">
+                            <p class="chart__source--data"><span>Fuente: </span><span>Human Mortality Database (HMD; datos entre 1908 y 2019), Instituto Nacional de Estadística (INE; Estadísticas del Padrón continuo (2020-2021) y proyecciones de población (2022-2035)). Consulta en febrero de 2022</span>.</p>
+                            <p class="chart__source--elab"><span>Elaboración: </span>Laboratorio de Estadísticas Experimentales (CSIC)</p>
+                        </div>                        
                         <p class="chart__source--copyright"><a class="link" href="https://creativecommons.org/licenses/by/4.0/deed.en_US" target="_blank">CC BY 4.0</a></p>
                     </div>
-                    <p class="chart__note"><span>Notas: </span><span id="data-note">De 1908 a 2021 los datos son reales. De 2022 a 2035 son proyecciones.</span></p>
+                    <p class="chart__note"><span>Notas: </span><span>De 1908 a 2021 los datos son reales. De 2022 a 2035 son proyecciones.</span></p>
                 </div>
                 <div class="logo">
                     <img src="https://raw.githubusercontent.com/CarlosMunozDiazCSIC/informe_perfil_mayores_2022_demografia_1_1/main/pre/iegd_logo.png" alt="Logo del Instituto de Economía, Geografía y Demografía (IEGD) del CSIC" width="100%" height="100%">
@@ -63,7 +66,7 @@
                 <p class="text__header">Descargar como PNG</p>
                 <p class="text__paragraph">También puede descargar el gráfico como una imagen .png haciendo click <button class="btn_share" id="pngImage">aquí</button></p> 
                 <p class="text__paragraph">El gráfico se descargará con los últimos filtros que haya utilizado.</p>
-                <p class="text__paragraph">Es conveniente advertir que, tras hacer una modificación de filtros, debe esperar unos segundos (entre 5 y 10) para que se renderice correctamente el bloque y pueda descargar la imagen de forma satisfactoria.</p>
+                <p class="text__paragraph">Es conveniente advertir que, tras hacer una modificación de filtros, debe esperar unos segundos (entre 6 y 10) para que se renderice correctamente el bloque y pueda descargar la imagen de forma satisfactoria.</p>
             </section>
             <section class="content b-iframes">
                 <div class="b-title">
@@ -74,7 +77,7 @@
                 <p class="text__paragraph">Si su sitio web acepta el uso de librerías de terceros, como es el caso de Pym.js, y desea disponer la opción responsiva de esta visualización, copie el siguiente código:</p>
                 <textarea class="text__iframe" disabled="" id="iframe-responsive"></textarea>
                 <p class="text__header">Embeber iframe con alto fijo</p>
-                <p class="text__paragraph">Si su sitio web no acepta iframes responsivos, puede utilizar el siguiente código con altura fija. En algunos gráficos del informe (tablas y visualizaciones largas en vertical) es posible que exista scroll vertical al incrustar el iframe en su página web.</p>             
+                <p class="text__paragraph">Si su sitio web no acepta iframes responsivos, puede utilizar el siguiente código con altura fija. Es posible que exista scroll vertical al incrustar el iframe en su página web.</p>             
                 <p class="text__paragraph">Si desea integrar esta visualización en su propia página, puede hacerlo copiando el siguiente código:</p>
                 <textarea class="text__iframe" disabled="" id="iframe-fixed"></textarea>
             </section>

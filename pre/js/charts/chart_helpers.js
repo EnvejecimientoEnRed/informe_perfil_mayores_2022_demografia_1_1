@@ -1,7 +1,7 @@
 export function setFixedIframeUrl(chart, title) {
     //Iframe fijo
     let id1 = document.getElementById('iframe-fixed');
-    id1.innerHTML = `<iframe src="https://CarlosMunozDiazCSIC/${chart}/?iframe=fixed" style="height:680px;width:100%;" title="${title}"></iframe>`;
+    id1.innerHTML = `<iframe src="https://CarlosMunozDiazCSIC/${chart}/?iframe=fixed" style="height:720px;width:100%;" title="${title}"></iframe>`;
     
     //Iframe responsive
     let id2 = document.getElementById('iframe-responsive');
