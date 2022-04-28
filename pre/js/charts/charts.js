@@ -21,7 +21,7 @@ export function initChart() {
         let currentType = 'Total';
 
         //Declaramos fuera las variables genéricas
-        let margin = {top: 7.5, right: 12.5, bottom: 20, left: 72.5},
+        let margin = {top: 12.5, right: 12.5, bottom: 25, left: 72.5},
             width = document.getElementById('chart').clientWidth - margin.left - margin.right,
             height = document.getElementById('chart').clientHeight - margin.top - margin.bottom;
 
