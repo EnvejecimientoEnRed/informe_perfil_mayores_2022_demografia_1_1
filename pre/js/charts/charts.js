@@ -118,8 +118,8 @@ export function initChart() {
 
                     //Texto
                     let html = '<p class="chart__tooltip--title">' + d.data.Periodo + '</p>' + 
-                        '<p class="chart__tooltip--text">Entre 65 y 79 años: ' + numberWithCommas2(parseInt(d.data.Total_entre65y79)) + ' personas (' + numberWithCommas(parseFloat(d.data.porc_total_entre65y79).toFixed(1)) + '% del total)</p>' +
-                        '<p class="chart__tooltip--text">80 o más años: ' + numberWithCommas2(parseInt(d.data.Total_mas80)) + ' personas (' + numberWithCommas(parseFloat(d.data.porc_total_mas80).toFixed(1)) + '% del total)</p>';
+                        '<p class="chart__tooltip--text">Entre 65 y 79 años: ' + numberWithCommas2(parseInt(d.data.Total_entre65y79)) + ' personas (<b>' + numberWithCommas(parseFloat(d.data.porc_total_entre65y79).toFixed(1)) + '%</b> del total)</p>' +
+                        '<p class="chart__tooltip--text">80 o más años: ' + numberWithCommas2(parseInt(d.data.Total_mas80)) + ' personas (<b>' + numberWithCommas(parseFloat(d.data.porc_total_mas80).toFixed(1)) + '%</b> del total)</p>';
                 
                     tooltip.html(html);
 
@@ -188,8 +188,8 @@ export function initChart() {
     
                             //Texto
                             let html = '<p class="chart__tooltip--title">' + d.data.Periodo + '</p>' + 
-                                '<p class="chart__tooltip--text">Entre 65 y 79 años: ' + numberWithCommas2(parseInt(d.data.Total_entre65y79)) + ' personas (' + numberWithCommas(parseFloat(d.data.porc_total_entre65y79).toFixed(1)) + '% del total)</p>' +
-                                '<p class="chart__tooltip--text">80 o más años: ' + numberWithCommas2(parseInt(d.data.Total_mas80)) + ' personas (' + numberWithCommas(parseFloat(d.data.porc_total_mas80).toFixed(1)) + '% del total)</p>';
+                                '<p class="chart__tooltip--text">Entre 65 y 79 años: ' + numberWithCommas2(parseInt(d.data.Total_entre65y79)) + ' personas (<b>' + numberWithCommas(parseFloat(d.data.porc_total_entre65y79).toFixed(1)) + '%</b> del total)</p>' +
+                                '<p class="chart__tooltip--text">80 o más años: ' + numberWithCommas2(parseInt(d.data.Total_mas80)) + ' personas (<b>' + numberWithCommas(parseFloat(d.data.porc_total_mas80).toFixed(1)) + '%</b> del total)</p>';
                         
                             tooltip.html(html);
     
@@ -254,8 +254,8 @@ export function initChart() {
     
                             //Texto
                             let html = '<p class="chart__tooltip--title">' + d.data.Periodo + '</p>' + 
-                                '<p class="chart__tooltip--text">Entre 65 y 79 años: ' + numberWithCommas2(parseInt(d.data.Total_entre65y79)) + ' personas (' + numberWithCommas(parseFloat(d.data.porc_total_entre65y79).toFixed(1)) + '% del total)</p>' +
-                                '<p class="chart__tooltip--text">80 o más años: ' + numberWithCommas2(parseInt(d.data.Total_mas80)) + ' personas (' + numberWithCommas(parseFloat(d.data.porc_total_mas80).toFixed(1)) + '% del total)</p>';
+                                '<p class="chart__tooltip--text">Entre 65 y 79 años: ' + numberWithCommas2(parseInt(d.data.Total_entre65y79)) + ' personas (<b>' + numberWithCommas(parseFloat(d.data.porc_total_entre65y79).toFixed(1)) + '%</b> del total)</p>' +
+                                '<p class="chart__tooltip--text">80 o más años: ' + numberWithCommas2(parseInt(d.data.Total_mas80)) + ' personas (<b>' + numberWithCommas(parseFloat(d.data.porc_total_mas80).toFixed(1)) + '%</b> del total)</p>';
                         
                             tooltip.html(html);
     
