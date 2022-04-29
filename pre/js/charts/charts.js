@@ -296,48 +296,49 @@ export function initChart() {
                 .data(function(d) { return d; })
                 .enter()
                 .append("rect")
-                    .attr("x", function(d) { return x(d.data.Periodo); })
-                    .attr("y", function(d) { return y(0); })
-                    .attr("height", function(d) { return 0; })
-                    .attr("width",x.bandwidth())
-                    .on('mouseover', function(d,i,e) {
-                        //Opacidad en barras
-                        let css = e[i].getAttribute('class').split(' ')[1];
-                        let bars = svg.selectAll('.rect');                    
-                
-                        bars.each(function() {
-                            this.style.opacity = '0.4';
-                            let split = this.getAttribute('class').split(" ")[1];
-                            if(split == `${css}`) {
-                                this.style.opacity = '1';
-                            }
-                        });
-
-                        //Texto
-                        let html = '<p class="chart__tooltip--title">' + d.data.Periodo + '</p>' + 
-                            '<p class="chart__tooltip--text">Entre 65 y 79 años: ' + numberWithCommas2(parseInt(d.data.Total_entre65y79)) + ' personas (' + numberWithCommas(parseFloat(d.data.porc_total_entre65y79).toFixed(1)) + ' % del total)</p>' +
-                            '<p class="chart__tooltip--text">80 o más años: ' + numberWithCommas2(parseInt(d.data.Total_mas80)) + ' personas (' + numberWithCommas(parseFloat(d.data.porc_total_mas80).toFixed(1)) + ' % del total)</p>';
-                    
-                        tooltip.html(html);
-
-                        //Tooltip
-                        positionTooltip(window.event, tooltip);
-                        getInTooltip(tooltip);
-                    })
-                    .on('mouseout', function(d,i,e) {
-                        //Quitamos los estilos de la línea
-                        let bars = svg.selectAll('.rect');
-                        bars.each(function() {
+                .attr('class', function(d) { return 'rect rect-' + d.data.Periodo; })
+                .attr("x", function(d) { return x(d.data.Periodo); })
+                .attr("y", function(d) { return y(0); })
+                .attr("height", function(d) { return 0; })
+                .attr("width",x.bandwidth())
+                .on('mouseover', function(d,i,e) {
+                    //Opacidad en barras
+                    let css = e[i].getAttribute('class').split(' ')[1];
+                    let bars = svg.selectAll('.rect');                    
+            
+                    bars.each(function() {
+                        this.style.opacity = '0.4';
+                        let split = this.getAttribute('class').split(" ")[1];
+                        if(split == `${css}`) {
                             this.style.opacity = '1';
-                        });
-                    
-                        //Quitamos el tooltip
-                        getOutTooltip(tooltip); 
-                    })
-                    .transition()
-                    .duration(2000)
-                    .attr("y", function(d) { return y(d[1]); })
-                    .attr("height", function(d) { return y(d[0]) - y(d[1]); });
+                        }
+                    });
+
+                    //Texto
+                    let html = '<p class="chart__tooltip--title">' + d.data.Periodo + '</p>' + 
+                        '<p class="chart__tooltip--text">Entre 65 y 79 años: ' + numberWithCommas2(parseInt(d.data.Total_entre65y79)) + ' personas (<b>' + numberWithCommas(parseFloat(d.data.porc_total_entre65y79).toFixed(1)) + '%</b> del total)</p>' +
+                        '<p class="chart__tooltip--text">80 o más años: ' + numberWithCommas2(parseInt(d.data.Total_mas80)) + ' personas (<b>' + numberWithCommas(parseFloat(d.data.porc_total_mas80).toFixed(1)) + '%</b> del total)</p>';
+                
+                    tooltip.html(html);
+
+                    //Tooltip
+                    positionTooltip(window.event, tooltip);
+                    getInTooltip(tooltip);
+                })
+                .on('mouseout', function(d,i,e) {
+                    //Quitamos los estilos de la línea
+                    let bars = svg.selectAll('.rect');
+                    bars.each(function() {
+                        this.style.opacity = '1';
+                    });
+                
+                    //Quitamos el tooltip
+                    getOutTooltip(tooltip); 
+                })
+                .transition()
+                .duration(2000)
+                .attr("y", function(d) { return y(d[1]); })
+                .attr("height", function(d) { return y(d[0]) - y(d[1]); });
         }
 
         /////
